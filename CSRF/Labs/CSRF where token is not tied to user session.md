@@ -5,4 +5,4 @@
 4. Create your CSRF poc and upload to the server;
 5. Send to the victim; 
 
-![[Pasted image 20231107144902.png]]
+![](/static/img/Pasted_image_20231107144902.png)
