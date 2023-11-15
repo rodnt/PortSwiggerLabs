@@ -1,6 +1,8 @@
 
 > This GitHub repository serves as a comprehensive storage for all the PortSwigger labs and their corresponding solutions or not :P. Thanks @PortSwigger
 
+Author: @rodnt
+
 # PortSwigger labs Solutions 
 
 * [JWT](JWT/JWT%20-%20Json%20Web%20Tokens.md)  - JSON Web Tokens 🔑
