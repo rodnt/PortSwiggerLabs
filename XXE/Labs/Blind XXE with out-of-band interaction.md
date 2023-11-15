@@ -6,4 +6,4 @@
 
 ![](/static/img/Pasted_image_20231113175726.png)
 
-3. ![](/static/img/Pasted_image_20231113175632.png)
+![](/static/img/Pasted_image_20231113175632.png)
