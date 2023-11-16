@@ -117,3 +117,31 @@ By itself, this behavior isn't necessarily vulnerable. However, by combining thi
 
 ##### Exploiting responses that expose too much information
 
+- Sometimes websites make themselves more vulnerable to web cache poisoning by giving away too much information about themselves and their behavior.
+
+> One of the challenges when constructing a web cache poisoning attack is ensuring that the harmful response gets cached;
+
+- Example:
+	- When responses contain information about how often the cache is purged or how old the currently cached response is:
+	```
+	HTTP/1.1 200 OK 
+	Via: 1.1 varnish-v4 Age: 174 
+	Cache-Control: public, max-age=1800
+	```
+
+- The rudimentary way that the `Vary` header is often used can also provide attackers with a helping hand:
+	- The `Vary` header specifies a list of additional headers that should be treated as part of the cache key even if they are normally **unkeyed**;
+	- If the attacker knows that the `User-Agent` header is part of the cache key, by first identifying the user agent of the intended victims, they could tailor the attack so that only users with that user agent are affected.
+
+#### Using web cache poisoning to exploit DOM-based vulnerabilities
+
+- If the website unsafely uses **unkeyed** headers to import files, this can potentially be exploited by an attacker to import a malicious file instead. However, this applies to more than just JavaScript files.
+- If you use web cache poisoning to make a website load malicious JSON data from your server, you may need to grant the website access to the JSON using [CORS](https://portswigger.net/web-security/cors):
+
+```http 
+HTTP/1.1 200 OK 
+Content-Type: application/json 
+Access-Control-Allow-Origin: *
+
+{ "malicious json" : "malicious json" }
+```
