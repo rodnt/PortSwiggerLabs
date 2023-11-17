@@ -14,3 +14,4 @@ Author: @rodnt
 * [XXE](XXE/Notes.md) - XXE ( XML external entity injection ) 📈
 * [Cors](Cors/Notes.md) - ..
 * [Web Cache Poisoning](Web%20Cache%20Poisoning/Notes.md) - Web Cache Poisoning 🧪
+* [HTTP Host Header Attacks](HTTP_Hotst_Header_Attacks/Notes.md) - HTTP Host header attacks

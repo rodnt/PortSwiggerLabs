@@ -145,3 +145,124 @@ Access-Control-Allow-Origin: *
 
 { "malicious json" : "malicious json" }
 ```
+
+#### Exploiting cache implementation flaws
+
+###### Cache key flaws
+
+1. Any payload injected via keyed inputs would act as a cache buster, meaning your poisoned cache entry would almost certainly never be served to any other users.
+- Many websites and CDNs perform various transformations on keyed components when they are saved in the cache key. This can include:
+
+	- Excluding the query string
+	- Filtering out specific query parameters
+	- Normalizing input in keyed components
+
+2. Cache probing methodology.
+	1. The methodology of probing for cache implementation flaws differs slightly from the classic web cache poisoning methodology. These newer techniques rely on flaws in the specific implementation and configuration of the cache, which may vary dramatically from site to site. This means that you need a deeper understanding of the target cache and its behavior;
+	2. The methodology involves the following steps:
+		1. [Identify a suitable cache oracle](https://portswigger.net/web-security/web-cache-poisoning/exploiting-implementation-flaws#identify-a-suitable-cache-oracle)
+		2. [Probe key handling](https://portswigger.net/web-security/web-cache-poisoning/exploiting-implementation-flaws#probe-key-handling)
+		3. [Identify an exploitable gadget](https://portswigger.net/web-security/web-cache-poisoning/exploiting-implementation-flaws#identify-an-exploitable-gadget)
+
+##### Identify a suitable cache oracle
+
+1.  A cache oracle is simply a page or endpoint that provides feedback about the cache's behavior;
+2. This needs to be cacheable and must indicate in some way whether you received a cached response or a response directly from the server, this can be achieve:
+	1.  An HTTP header that explicitly tells you whether you got a cache hit;
+	2. Observable changes to dynamic content;
+	3. Distinct response times;
+> If you can identify that a specific third-party cache is being used, you can also consult the corresponding documentation.
+
+- For example, Akamai-based websites may support the header `Pragma: akamai-x-get-cache-key`, which you can use to display the cache key in the response headers:
+
+```http
+GET /?param=1 HTTP/1.1 
+Host: innocent-website.com 
+Pragma: akamai-x-get-cache-key 
+HTTP/1.1 200 OK 
+X-Cache-Key: innocent-website.com/?param=1
+```
+
+###### Probe key handling
+
+- The next step is to investigate whether the cache performs any additional processing of your input when generating the cache key;
+- You should specifically look at any **transformation** that is taking place. Is anything being excluded from a keyed component when it is added to the cache key? Common examples are excluding specific query parameters, or even the entire query string, and removing the port from the `Host` header.
+
+Let's say that our hypothetical cache oracle is the target website's home page. This automatically redirects users to a region-specific page. It uses the `Host` header to dynamically generate the `Location` header in the response:
+
+`GET / HTTP/1.1 Host: vulnerable-website.com HTTP/1.1 302 Moved Permanently Location: https://vulnerable-website.com/en Cache-Status: miss`
+
+To test whether the port is excluded from the cache key, we first need to request an arbitrary port and make sure that we receive a fresh response from the server that reflects this input:
+
+`GET / HTTP/1.1 Host: vulnerable-website.com:1337 HTTP/1.1 302 Moved Permanently Location: https://vulnerable-website.com:1337/en Cache-Status: miss`
+
+Next, we'll send another request, but this time we won't specify a port:
+
+`GET / HTTP/1.1 Host: vulnerable-website.com HTTP/1.1 302 Moved Permanently Location: https://vulnerable-website.com:1337/en Cache-Status: hit`
+
+##### Identify an exploitable gadget
+
+- These gadgets will often be classic client-side vulnerabilities, such as [reflected XSS](https://portswigger.net/web-security/cross-site-scripting/reflected) and open redirects;
+- Perhaps even more interestingly, these techniques enable you to exploit a number of unclassified vulnerabilities that are often dismissed as "unexploitable" and left unpatched. This includes the use of dynamic content in resource files, and exploits requiring malformed requests that a browser would never send.
+
+
+#### Exploiting cache key flaws
+
+##### Unkeyed port
+
+- Example, consider the case we saw earlier where a redirect URL was dynamically generated based on the `Host` header. This might enable you to construct a denial-of-service attack by simply adding an arbitrary port to the request. All users who browsed to the home page would be redirected to a dud port, effectively taking down the home page until the cache expired. This kind of attack can be escalated further if the website allows you to specify a non-numeric port. You could use this to inject an XSS payload, for example.
+
+##### Unkeyed query string
+
+1. Like the `Host` header, the request line is typically keyed. However, one of the most common cache-key transformations is to exclude the entire query string.
+2. 
+
+
+### Unkeyed query parameters
+
+So far we've seen that on some websites, the entire query string is excluded from the cache key. But some websites only exclude specific query parameters that are not relevant to the back-end application, **such as parameters for analytics or serving targeted advertisements. UTM parameters like `utm_content` are good candidates to check during testing**.
+
+Parameters that have been excluded from the cache key are unlikely to have a significant impact on the response. The chances are there won't be any useful gadgets that accept input from these parameters. That said, some pages handle the entire URL in a vulnerable manner, making it possible to exploit arbitrary parameters.
+
+
+###### Cache parameter cloaking
+
+> If the cache excludes a harmless parameter from the cache key, and you can't find any exploitable gadgets based on the full URL, you'd be forgiven for thinking that you've reached a dead end. However, this is actually where things can get interesting.
+
+> If you can work out how the cache parses the URL to identify and remove the unwanted parameters, you might find some interesting quirks. Of particular interest are any parsing discrepancies between the cache and the application. This can potentially allow you to sneak arbitrary parameters into the application logic by "cloaking" them in an excluded parameter.
+
+
+Let's assume that the algorithm for excluding parameters from the cache key behaves in this way, but the server's algorithm only accepts the first `?` as a delimiter. Consider the following request:
+
+`GET /?example=123?excluded_param=bad-stuff-here`
+
+In this case, the cache would identify two parameters and exclude the second one from the cache key. However, the server doesn't accept the second `?` as a delimiter and instead only sees one parameter, `example`, whose value is the entire rest of the query string, including our payload. If the value of `example` is passed into a useful gadget, we have successfully injected our payload without affecting the cache key.
+
+
+#### Exploiting parameter parsing quirks
+
+Similar parameter cloaking issues can arise in the opposite scenario, where the back-end identifies distinct parameters that the cache does not. The Ruby on Rails framework, for example, interprets both ampersands (&) and semicolons (;) as delimiters. When used in conjunction with a cache that does not allow this, you can potentially exploit another quirk to override the value of a keyed parameter in the application logic.
+
+Consider the following request:
+
+`GET /?keyed_param=abc&excluded_param=123;keyed_param=bad-stuff-here`
+
+As the names suggest, `keyed_param` is included in the cache key, but `excluded_param` is not. Many caches will only interpret this as two parameters, delimited by the ampersand:
+
+1. `keyed_param=abc`
+2. `excluded_param=123;keyed_param=bad-stuff-here`
+
+Once the parsing algorithm removes the `excluded_param`, the cache key will only contain `keyed_param=abc`. On the back-end, however, Ruby on Rails sees the semicolon and splits the query string into three separate parameters:
+
+1. `keyed_param=abc`
+2. `excluded_param=123`
+3. `keyed_param=bad-stuff-here`
+
+But now there is a duplicate **keyed_param**. This is where the second quirk comes into play. If there are duplicate parameters, each with different values, Ruby on Rails gives precedence to the final occurrence. The end result is that the cache key contains an innocent, expected parameter value, allowing the cached response to be served as normal to other users. On the back-end, however, the same parameter has a completely different value, which is our injected payload. It is this second value that will be passed into the gadget and reflected in the poisoned response.
+
+This exploit can be especially powerful if it gives you control over a function that will be executed. For example, **if a website is using JSONP to make a cross-domain request, this will often contain a callback parameter to execute a given function on the returned data:**
+
+GET /jsonp?callback=innocentFunction
+In this case, you could use these techniques to override the expected callback function and execute arbitrary JavaScript instead.
+
+
