@@ -14,3 +14,7 @@
 4. Access the following path
 
 ![](/static/img/Pasted_image_20231117185250.png)
+
+![[Pasted image 20231118112631.png]]
+
+![[Pasted image 20231118112638.png]]
