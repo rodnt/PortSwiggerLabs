@@ -1,8 +1,8 @@
 
 > This GitHub repository serves as a comprehensive storage for all the PortSwigger labs and their corresponding solutions or not :P. Thanks @PortSwigger
 
-Author: @rodnt
-Thanks: @PortSwigger
+- Author: @rodnt
+- Thanks: @PortSwigger
 
 # PortSwigger labs Solutions 
 
