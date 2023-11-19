@@ -12,6 +12,9 @@ Author: @rodnt
 * [GraphQL](GraphQL/GraphQL.md) - GraphQL 😑
 * [CSRF](CSRF/Notes.md) - CSRF ( Cross Site Request Forgery) 🍪
 * [XXE](XXE/Notes.md) - XXE ( XML external entity injection ) 📈
-* [Cors](Cors/Notes.md) - ..
+* [Cors](Cors/Notes.md) - Working in Progress
 * [Web Cache Poisoning](Web%20Cache%20Poisoning/Notes.md) - Web Cache Poisoning 🧪
 * [HTTP Host Header Attacks](HTTP_Hotst_Header_Attacks/Notes.md) - HTTP Host header attacks
+* [OAuth](Oauth/Notes.md) - Working in progress..
+* [Access Control](Access_Control_Vulnerabilities/Labs/) - Access control vulnerabilities
+* [Authentication](Authentication/Notes.md) - Authentication
