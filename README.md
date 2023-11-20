@@ -19,3 +19,6 @@
 * [OAuth](Oauth/Notes.md) - Working in progress..
 * [Access Control](Access_Control_Vulnerabilities/Labs/) - Access control vulnerabilities
 * [Authentication](Authentication/Notes.md) - Authentication
+* [ClickJacking](ClickJacking/Notes.md) - ClickJacking ( Working in progress )
+- [WebSocket](WebSocket/Notes.md) - WebSocket ( Working in progress )
+- [Insecure deserialization](Insecure_deserialization/Notes.md) - Insecure deserialization ( Working in progress )
