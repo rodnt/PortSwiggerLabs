@@ -4,9 +4,11 @@
 - Author: @rodnt
 - Thanks: @PortSwigger
 
+- You can find the practice exam here at my blog [https://rodnt.github.io/post/portswigger-practice-exam/](https://rodnt.github.io/post/portswigger-practice-exam/)
 # PortSwigger labs Solutions 
 
 - [Mystery Labs](Mystery%20Labs/) - Mystery Labs 🔮
+- [API testing](/API_Testing/Notes.md) - API Testing
 * [JWT](JWT/JWT%20-%20Json%20Web%20Tokens.md)  - JSON Web Tokens 🔑
 * [Essential Skills](essentialSkills/Essential%20skills.md) - Mastery your burp knowledge 🥷🏿
 * [SQL Injection](SQLInjection/SQL%20Injection.md) - SQL Injection 💉
