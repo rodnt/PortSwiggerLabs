@@ -4,7 +4,7 @@
 - Author: @rodnt
 - Thanks: @PortSwigger
 
-- You can find the practice exam here at my blog [https://rodnt.github.io/post/portswigger-practice-exam/](https://rodnt.github.io/post/portswigger-practice-exam/)
+- You can find the practice exam here at my blog [https://rodnt.github.io/posts/portswigger-practice-exam/](https://rodnt.github.io/posts/portswigger-practice-exam/)
 # PortSwigger labs Solutions 
 
 - [Mystery Labs](Mystery%20Labs/) - Mystery Labs 🔮
