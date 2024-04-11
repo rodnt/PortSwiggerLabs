@@ -26,3 +26,4 @@
 - [WebSocket](WebSocket/Notes.md) - WebSocket ( Working in progress )  🕸️🧦 
 - [Insecure deserialization](Insecure_deserialization/Notes.md) - Insecure deserialization ( Working in progress ) 🧙🏻‍♀
 - [HTTP Request Smuggling](HTTP_request_smuggling/Notes.md) - HTTP Request Smuggling ( Working in progress ) 🏴‍☠
+- [WEB LLM Attacks](/Web_Cache_Poisoning/Notes.md) - LLM vulnerabilities 🤖
